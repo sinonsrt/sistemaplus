@@ -1,14 +1,29 @@
 <?php
-	//conexão com o servidor
-	$servidor = "localhost";
-	$usuario  = "root";
-	$senha 	  = "";
-	$bd		  = "webplus";
+	//arquivo para criar uma conexão com o banco de dados mysql
 
-	try{
-		$pdo = new PDO("mysql:host=$servidor; dbname = $bd; charset = utf8", $usuario, $senha);
+	$servidor = "localhost";
+	//em 99% dos casos é localhost
+
+	//usuario de acesso ao banco
+	$usuario = "root";
+	$senha = "";
+
+	//nome do banco de dados
+	$banco = "webplus";
+
+	try {
+		//criar uma conexao com PDO
+		$pdo = new PDO("mysql:host=$servidor;
+			dbname=$banco;
+			charset=utf8",
+			$usuario,
+			$senha);
+
 	} catch (PDOException $erro) {
+
+		//mensagem de erro
 		$msg = $erro->getMessage();
-		echo "<p> Erro ao se conectar com bando de dados: $msg </p>";
+
+		echo "<p>Erro ao conectar no banco de dados: $msg </p>";
+
 	}
-?>

@@ -24,23 +24,23 @@
       $msg = '<p class="alert alert-danger">Preencha o campo Senha</p>';
     else {
       //verificar se o login existe
-      $sql = "select id, login, senha from usuario where login = ? limit 1";
+      $sql = "select * from usuario where login = ? limit 1";
       //apontar a conexao com o banco
       //preparar o sql para execução
-      $consulta = $pdo->prepare($sql);
+      $consult = $pdo->prepare($sql);
       //passar o parametro para o sql
-      $consulta->bindParam(1, $login);
+      $consult->bindParam(1, $login);
       //executar o sql
-      $consulta->execute();
+      $consult->execute();
       //puxar os dados do resultado
-      $dados = $consulta->fetch(PDO::FETCH_OBJ);
+      $dados = $consult->fetch(PDO::FETCH_OBJ);
 
       //verificar se existe usuario
       if ( empty ( $dados->id ) ) 
-        $msg = '<p class="alert alert-danger">O usuário não existe!</p>';
+        $msg = '<p class="alert alert-danger">O usuário não existe! '.$login.$dados->login.'</p>';
       //verificar se a senha esta correta
-      else if ( !password_verify($senha, $dados->senha) )
-        $msg = '<p class="alert alert-danger">Senha incorreta</p>';
+      else if ( !($dados->senha === $senha)) //!password_verify($senha, $dados->senha))
+        $msg = '<p class="alert alert-danger">Senha incorreta '.$senha.$dados->senha.'</p>';
       //se deu tudo certo
       else {
         //registrar este usuário na sessao
@@ -50,13 +50,14 @@
         //redirecionar para o home
         $msg = 'Deu certo!';
         //javascript para redirecionar
-        echo '<script>location.href="paginas/home";</script>';
+        echo '<script>location.href="index.php";</script>';
         exit;
 
       }
     }
   }
 ?>
+
 <body class="bg-gradient-primary">
 
   <div class="container">
